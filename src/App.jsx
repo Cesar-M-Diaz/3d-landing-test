@@ -1,27 +1,39 @@
 import * as THREE from 'three'
 import { useRef, useState } from "react"
-import { Canvas, useFrame } from "@react-three/fiber"
+import { Canvas, useFrame, useThree } from "@react-three/fiber"
 
-export default function App() {
+function Box({z}) {
+  const ref = useRef()
+  const {viewport, camera} = useThree()
+  const {width, height} = viewport.getCurrentViewport(camera, [0,0,z])
 
-  function Box() {
-    const ref = useRef()
-    const [clicked, setClicked] = useState(false)
-    useFrame((state) => {
-      ref.current.position.z = THREE.MathUtils.lerp(ref.current.position.z, clicked ? 2 : 0, 0.1)
-    })
+  const [data] = useState({
+    x: THREE.MathUtils.randFloatSpread(2),
+    y: THREE.MathUtils.randFloatSpread(height)
+  })
 
-    return (
-      <mesh ref={ref} onClick={() => setClicked(!clicked)}>
-      <boxGeometry />
-      <meshBasicMaterial color='orange' />
-    </mesh>
-    )
-  }
+  useFrame(() => {
+    ref.current.position.set(data.x * width, (data.y += 0.1), z)
+    if (data.y > height / 1.5) {
+      data.y = -height / 1.5
+    }
+  
+  })
+
+  return (
+    <mesh ref={ref} >
+    <boxGeometry />
+    <meshBasicMaterial color='orange' />
+  </mesh>
+  )
+}
+
+
+export default function App({count = 100}) {
 
   return (
   <Canvas>
-    <Box />
+    {Array.from({length: count}, (_,i) => (<Box key={i} z={-i} />))}
   </Canvas>
   )
 }
