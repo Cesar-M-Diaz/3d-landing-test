@@ -38,7 +38,7 @@ function Dodecaedro({ z, speed }) {
   );
 }
 
-export default function Geometry({ speed = 1, count = 100 }) {
+export default function Geometry({ speed = 1, count = 100, target = 10 }) {
   return (
     <Canvas gl={{ alpha: false }} camera={{ position: [0, 0, 10], fov: 40, near: 0.01, far: 115 }}>
       <color attach="background" args={['white']} />
@@ -47,7 +47,7 @@ export default function Geometry({ speed = 1, count = 100 }) {
         <Dodecaedro key={i} z={-i} speed={speed} />
       ))}
       <EffectComposer>
-        <DepthOfField target={[0, 0, 30]} bokehScale={2} width={700} height={700} />
+        <DepthOfField target={[0, 0, target]} bokehScale={2} width={700} height={700} />
       </EffectComposer>
     </Canvas>
   );

@@ -5,8 +5,9 @@ export default function Overlay() {
     <Container>
       <TopLeft>
         <h1>
-          react
-          <br />3 fiber
+          landing
+          <br />
+          3d background
         </h1>
       </TopLeft>
     </Container>
